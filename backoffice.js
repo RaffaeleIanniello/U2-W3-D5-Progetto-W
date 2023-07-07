@@ -56,14 +56,17 @@ eventForm.addEventListener('submit', function (e) {
   const nameInput = document.getElementById('event-name')
   const descriptionInput = document.getElementById('event-description')
   const priceInput = document.getElementById('event-price')
-  const timeInput = document.getElementById('event-time')
+const imageInput = document.getElementById('event-image')
+  const brandInput = document.getElementById('event-brand')
 
   // ora raccolgo i loro .value e impacchetto il mio oggetto:
   const newEvent = {
     name: nameInput.value,
     description: descriptionInput.value,
     price: priceInput.value,
-    time: timeInput.value,
+    brand: brandInput.value,
+    image: imageInput.value,
+    
   }
 
   console.log('ecco i valori recuperati dal form:', newEvent)
