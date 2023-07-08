@@ -1,22 +1,17 @@
 
-const URL = 'https://striveschool-api.herokuapp.com/api/agenda/'
+const URL = 'https://striveschool-api.herokuapp.com/api/product/'
 
-// parte finale della lezione: ora la pagina backoffice ha un doppio funzionamento:
-// 1) può creare nuovi eventi
-// 2) la voglio abilitare anche alla modifica di un evento esistente
 
-// recuperiamo il parametro "id" dalla address bar:
 const addressBarContent = new URLSearchParams(location.search)
 
 const eventId = addressBarContent.get('id')
 console.log('EVENTID', eventId)
 if (eventId) {
-  // siamo in modalità MODIFICA!
-  // cambio la label del bottone
+  
   document.querySelector('.btn-primary').innerText = 'Modifica evento'
   // cambio il contenuto dell'h1
   document.querySelector('h1').innerText = 'EpiTicket - Modifica evento'
-  // devo anche ripopolare il form con i dettagli dell'evento a cui faccio riferimento (con _id === eventId)
+  
   fetch(URL + eventId)
     .then((res) => {
       if (res.ok) {
@@ -30,15 +25,16 @@ if (eventId) {
       // ripopolo il form
       const nameInput = document.getElementById('event-name')
       const descriptionInput = document.getElementById('event-description')
-      const priceInput = document.getElementById('event-price')
       const brandInput = document.getElementById('event-brand')
       const imageInput = document.getElementById('event-image')
-
+      const priceInput = document.getElementById('event-price')
+      
       nameInput.value = detail.name
       descriptionInput.value = detail.description
-      priceInput.value = detail.price
-      imageInput.value = detail.image
       brandInput.value = detail.brand
+      imageInput.value = detail.image
+      priceInput.value = detail.price
+     
     })
     .catch((err) => console.log(err))
 }
@@ -55,37 +51,35 @@ eventForm.addEventListener('submit', function (e) {
   // prendiamo i riferimenti agli input field
   const nameInput = document.getElementById('event-name')
   const descriptionInput = document.getElementById('event-description')
-  const priceInput = document.getElementById('event-price')
-const imageInput = document.getElementById('event-image')
   const brandInput = document.getElementById('event-brand')
+  const imageInput = document.getElementById('event-image')
+  const priceInput = document.getElementById('event-price')
+
 
   // ora raccolgo i loro .value e impacchetto il mio oggetto:
-  const newEvent = {
+  let newEvent = {
     name: nameInput.value,
     description: descriptionInput.value,
-    price: priceInput.value,
     brand: brandInput.value,
-    image: imageInput.value,
+    imageUrl: imageInput.value,
+    price: priceInput.value,
+   
     
   }
 
   console.log('ecco i valori recuperati dal form:', newEvent)
 
-  // ora inviamo il nostro newEvent alle API :)
-  // faremo una chiamata con method POST
-  // in un'architettura RESTful
+  
 
-  const URL = 'https://striveschool-api.herokuapp.com/api/agenda'
+ 
 
-  // const urlToUse = eventId ? URL + '/' + eventId : URL
+  
   let urlToUse
   if (eventId) {
-    urlToUse = URL + '/' + eventId
+    urlToUse = URL + eventId
   } else {
-    urlToUse = URL
+    urlToUse = 'https://striveschool-api.herokuapp.com/api/product'
   }
-  // urlToUse diventa https://striveschool-api.herokuapp.com/api/agenda/64a68193da53c10014a96886 se c'è un eventId
-  // oppure diventa solamente https://striveschool-api.herokuapp.com/api/agenda se non c'è un eventId
 
   let methodToUse
   if (eventId) {
@@ -93,29 +87,32 @@ const imageInput = document.getElementById('event-image')
   } else {
     methodToUse = 'POST'
   }
-
+console.log(urlToUse)
   fetch(urlToUse, {
-    method: methodToUse, // dichiaro che la mia operazione è di CREAZIONE, quindi uso il method 'POST'
-    body: JSON.stringify(newEvent), // il body accetta solamente una stringa su HTTP
+    method: methodToUse, 
+    body: JSON.stringify(newEvent), 
     headers: {
-      // qua inserireste anche l'authorization, se presente...
-      // Authorization: '',
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGE4Mjg2ZjEyYjUwYzAwMTQ5ZTYzNjciLCJpYXQiOjE2ODg3NDE5OTksImV4cCI6MTY4OTk1MTU5OX0.4CRj5V8zNMX5Dl03fSFNVUSAK1UId1TqULVjf4rj0ls",
+
       'Content-Type': 'application/json',
     },
+  
   })
     .then((res) => {
+      console.log(res)
       if (res.ok) {
-        // se finisco qua, la promise è stata completata e il codice di ritorno è 200 o 201 etc.
-        // l'evento è stato salvato correttamente!
-        alert('EVENTO SALVATO!')
-        // svuoto il form
+       
+        
+        alert('PRODOTTO SALVATO!')
+   
         nameInput.value = ''
         descriptionInput.value = ''
         priceInput.value = ''
-        timeInput.value = ''
+        brandInput.value = ''
+        imageInput.value = ''
         location.assign('index.html')
       } else {
-        // se finisco qua vuol dire che l'evento NON è stato salvato correttamente
+       
         throw new Error("Errore nel salvataggio dell'evento")
       }
     })

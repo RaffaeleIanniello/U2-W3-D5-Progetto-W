@@ -1,9 +1,16 @@
 const getEventData = function () {
-    const URL = 'https://striveschool-api.herokuapp.com/api/agenda'
-    // sarà un'operazione di GET, quindi non ho bisogno di specificare il secondo parametro di fetch
-    // perchè il method è quello predefinito, quest'API non necessità autenticazione, essendo un'operazione
-    // di GET non dobbiamo passare nessun body etc.
-    fetch(URL)
+    const URL = 'https://striveschool-api.herokuapp.com/api/product/'
+   
+    fetch(URL,  {
+      method: 'GET', 
+     
+      headers: {
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGE4Mjg2ZjEyYjUwYzAwMTQ5ZTYzNjciLCJpYXQiOjE2ODg3NDE5OTksImV4cCI6MTY4OTk1MTU5OX0.4CRj5V8zNMX5Dl03fSFNVUSAK1UId1TqULVjf4rj0ls",
+  
+        'Content-Type': 'application/json',
+      },
+    
+    })
       .then((res) => {
         console.log('Response della GET', res)
         if (res.ok) {
@@ -26,8 +33,8 @@ const getEventData = function () {
           newCol.innerHTML = `
             <div class="card">
                 <img
-                  src="https://img.freepik.com/free-photo/excited-audience-watching-confetti-fireworks-having-fun-music-festival-night-copy-space_637285-559.jpg?w=1380&t=st=1688627778~exp=1688628378~hmac=e7aa687afd23b37e4ba220945675dfcd73dce37b849eefef1257dc1822086397"
-                  class="card-img-top"
+                  src="${event.imageUrl}"
+                  class="w-100 rounded-start"
                   alt="concert placeholder image"
                 />
                 <div class="card-body">
@@ -36,7 +43,7 @@ const getEventData = function () {
                     ${event.description}
                   </p>
                   <p class="card-text">
-                    ${event.time}
+                    ${event.brand} 
                   </p>
                   <p class="card-text fw-bold">
                     ${event.price}€

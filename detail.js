@@ -1,4 +1,4 @@
-const URL = 'https://striveschool-api.herokuapp.com/api/agenda/'
+const URL = 'https://striveschool-api.herokuapp.com/api/product'
 
 // recuperiamo il parametro "id" dalla address bar:
 const addressBarContent = new URLSearchParams(location.search)
@@ -7,13 +7,13 @@ const eventId = addressBarContent.get('id')
 console.log('EVENTID', eventId)
 console.log(URL + eventId)
 
-// faccio una fetch per i dettagli del singolo evento con eventId recuperato dalla barra degli indirizzi
+
 fetch(URL + eventId)
   .then((res) => {
     if (res.ok) {
-      return res.json() // ho bisogno dei dettagli dell'evento!
+      return res.json() 
     } else {
-      throw new Error("Errore nel recupero dei dettagli dell'evento")
+      throw new Error("Errore nel recupero dei dettagli del prodotto")
     }
   })
   .then((detail) => {
@@ -27,7 +27,7 @@ fetch(URL + eventId)
     newCol.innerHTML = `
           <div class="card">
               <img
-                src="https://img.freepik.com/free-photo/excited-audience-watching-confetti-fireworks-having-fun-music-festival-night-copy-space_637285-559.jpg?w=1380&t=st=1688627778~exp=1688628378~hmac=e7aa687afd23b37e4ba220945675dfcd73dce37b849eefef1257dc1822086397"
+                src="${detail.imageUrl}"
                 class="card-img-top"
                 alt="concert placeholder image"
               />
@@ -37,7 +37,7 @@ fetch(URL + eventId)
                   ${detail.description}
                 </p>
                 <p class="card-text">
-                  ${detail.time}
+                  ${detail.brands}
                 </p>
                 <p class="card-text fw-bold">
                   ${detail.price}€
@@ -79,7 +79,3 @@ fetch(URL + eventId)
     console.log(err)
   })
 
-//  GET    -> URL oppure URL + ID se volete una risorsa specifica
-//  POST   -> URL
-//  PUT    -> URL + ID
-//  DELETE -> URL + ID
